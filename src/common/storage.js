@@ -13,3 +13,10 @@ export function remove(keys) {
 export function clear() {
   return new Promise((resolve) => chrome.storage.sync.clear(resolve));
 }
+
+export default {
+  get,
+  set,
+  remove,
+  clear,
+};
