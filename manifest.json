@@ -18,7 +18,7 @@
   },
   "options_ui": {
     "page": "options.html",
-    "open_in_tab": false
+    "open_in_tab": true
   },
   "icons": {
     "16": "assets/images/logo-16.png",

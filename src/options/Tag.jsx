@@ -7,7 +7,7 @@ function TagComponent({ value, onRemove, styles }) {
     <span
       style={{
         ...styles,
-        backgroundColor: "gray",
+        backgroundColor: "#DDD",
         borderRadius: "5px",
         padding: "10px 3px",
       }}

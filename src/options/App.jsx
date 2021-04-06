@@ -1,25 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Set } from "immutable";
+import { Set as ImmutableSet } from "immutable";
 import storage from "../common/storage";
 import Tag from "./Tag";
 
-console.log(0);
-
 function AppComponent() {
-  const [selectedZones, setSelectedZones] = useState(new Set());
-  console.log(1);
+  const [selectedZones, setSelectedZones] = useState(new ImmutableSet());
 
   useEffect(() => {
     (async () => {
-      console.log(2);
       const { selectedZones } = await storage.get("selectedZones");
-      setSelectedZones(selectedZones);
+      setSelectedZones(new ImmutableSet(selectedZones));
     })();
   }, []);
 
   function updateSelectedZones(selected) {
     setSelectedZones(selected);
-    return storage.set({ selectedZones: selected });
+    return storage.set({ selectedZones: Array.from(selected) });
   }
 
   async function removeZone(zone) {
