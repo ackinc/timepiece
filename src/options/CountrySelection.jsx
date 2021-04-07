@@ -2,7 +2,7 @@ import { TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
-import tzopts from "../common/tzopts";
+import { tzopts } from "../common/tzutils";
 
 const blankOption = { name: "" };
 const options = [blankOption].concat(tzopts);

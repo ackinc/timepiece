@@ -48,6 +48,12 @@ const canonicalTimezones = sortedUniqBy(
   ({ name }) => name
 );
 
-const tzopts = [].concat(cities).concat(altNames).concat(canonicalTimezones);
+export const tzopts = []
+  .concat(cities)
+  .concat(altNames)
+  .concat(canonicalTimezones);
 
-export default tzopts;
+export const tzmap = tzopts.reduce((acc, { name, tzName }) => {
+  acc[name] = acc[tzName];
+  return acc;
+}, {});
