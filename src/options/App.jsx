@@ -1,8 +1,8 @@
+import { Chip } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import { Set as ImmutableSet } from "immutable";
 import storage from "../common/storage";
 import CountrySelectionComponent from "./CountrySelection";
-import Tag from "./Tag";
 
 function AppComponent() {
   const [selectedZones, setSelectedZones] = useState(new ImmutableSet());
@@ -34,12 +34,7 @@ function AppComponent() {
       <CountrySelectionComponent onSelect={addZone} />
       <div className="selected-zones">
         {selectedZones.map((zone) => (
-          <Tag
-            key={zone}
-            value={zone}
-            style={{ marginRight: "20px" }}
-            onRemove={removeZone}
-          />
+          <Chip key={zone} label={zone} onDelete={() => removeZone(zone)} />
         ))}
       </div>
     </div>
