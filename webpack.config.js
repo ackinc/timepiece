@@ -7,6 +7,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 module.exports = {
   entry: {
     background: "./src/background/index.js",
+    options: "./src/options/main.jsx",
     popup: "./src/popup/main.jsx",
   },
   output: {
@@ -38,6 +39,11 @@ module.exports = {
     ],
   },
   plugins: [
+    new HtmlWebpackPlugin({
+      filename: "options.html",
+      template: "src/options/index.html",
+      chunks: ["options"],
+    }),
     new HtmlWebpackPlugin({
       filename: "popup.html",
       template: "src/popup/index.html",
