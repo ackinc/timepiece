@@ -1,45 +1,40 @@
 import { TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import { flatten, sortedUniq } from "lodash";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
-import { getTimeZones } from "@vvo/tzdb";
+import tzopts from "../common/tzopts";
 
-const groupedTimezones = getTimeZones();
-const options = [""]
-  .concat(
-    sortedUniq(
-      groupedTimezones.map(({ alternativeName }) => alternativeName).sort()
-    )
-  )
-  .concat(flatten(groupedTimezones.map(({ group }) => group)).sort());
+const blankOption = { name: "" };
+const options = [blankOption].concat(tzopts);
 
 function CountrySelectionComponent({ onSelect }) {
+  // If we don't control inputValue, the combobox will display entered text
+  //   on field blur
   const [inputValue, setInputValue] = useState("");
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(blankOption);
 
   return (
     <Autocomplete
       options={options}
-      // style={{ width: 300 }}
+      getOptionLabel={({ name }) => name}
       renderInput={(params) => (
         <TextField {...params} label="Add Timezone" variant="outlined" />
       )}
       inputValue={inputValue}
       value={value}
       onInputChange={handleInputChange}
-      onChange={handleSelect}
+      onChange={handleChange}
     />
   );
 
-  function handleInputChange(_, value) {
-    setInputValue(value);
+  function handleInputChange(_, input) {
+    setInputValue(input);
   }
 
-  async function handleSelect(_, value) {
-    if (value) await onSelect(value);
+  async function handleChange(_, { name }) {
+    if (name) await onSelect(name);
     setInputValue("");
-    setValue("");
+    setValue(blankOption);
   }
 }
 

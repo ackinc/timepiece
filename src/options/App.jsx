@@ -9,7 +9,7 @@ function AppComponent() {
 
   useEffect(() => {
     (async () => {
-      const { selectedZones } = await storage.get("selectedZones");
+      const { selectedZones = [] } = await storage.get("selectedZones");
       setSelectedZones(new ImmutableSet(selectedZones));
     })();
   }, []);
@@ -20,7 +20,7 @@ function AppComponent() {
   }
 
   async function removeZone(zone) {
-    const newSelection = selectedZones.remove(zone);
+    const newSelection = selectedZones.delete(zone);
     await updateSelectedZones(newSelection);
   }
 
