@@ -19,11 +19,18 @@ const cities = sortedUniqBy(
 
 const altNames = sortedUniqBy(
   groupedTimezones
-    .map(({ name, alternativeName, currentTimeOffsetInMinutes }) => ({
-      name: alternativeName,
-      tzName: name,
-      offset: currentTimeOffsetInMinutes,
-    }))
+    .map(
+      ({
+        name,
+        abbreviation,
+        alternativeName,
+        currentTimeOffsetInMinutes,
+      }) => ({
+        name: `${alternativeName} (${abbreviation})`,
+        tzName: name,
+        offset: currentTimeOffsetInMinutes,
+      })
+    )
     .sort((a, b) => a.name.localeCompare(b.name)),
   ({ name }) => name
 );
