@@ -54,6 +54,6 @@ export const tzopts = []
   .concat(canonicalTimezones);
 
 export const tzmap = tzopts.reduce((acc, { name, tzName }) => {
-  acc[name] = acc[tzName];
+  acc[name] = tzName;
   return acc;
 }, {});
