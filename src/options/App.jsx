@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Set as ImmutableSet } from "immutable";
 import storage from "../common/storage";
+import CountrySelectionComponent from "./CountrySelection";
 import Tag from "./Tag";
 
 function AppComponent() {
@@ -30,6 +31,7 @@ function AppComponent() {
 
   return (
     <div className="container">
+      <CountrySelectionComponent onSelect={addZone} />
       <div className="selected-zones">
         {selectedZones.map((zone) => (
           <Tag
