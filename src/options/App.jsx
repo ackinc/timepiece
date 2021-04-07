@@ -30,7 +30,10 @@ function AppComponent() {
   }
 
   return (
-    <div className="container">
+    <div
+      className="container"
+      style={{ minWidth: "400px", minHeight: "500px" }}
+    >
       <CountrySelectionComponent onSelect={addZone} />
       <div className="selected-zones">
         {selectedZones.map((zone) => (
