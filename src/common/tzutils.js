@@ -1,5 +1,5 @@
 import { getTimeZones } from "@vvo/tzdb";
-import { flatten, sortedUniqBy } from "lodash";
+import { flatten, keyBy, sortedUniqBy } from "lodash";
 
 const groupedTimezones = getTimeZones();
 
@@ -9,6 +9,7 @@ const cities = sortedUniqBy(
       ({ name, mainCities, countryName, currentTimeOffsetInMinutes }) =>
         mainCities.map((city) => ({
           name: `${city}, ${countryName}`,
+          type: "city",
           tzName: name,
           offset: currentTimeOffsetInMinutes,
         }))
@@ -27,6 +28,7 @@ const altNames = sortedUniqBy(
         currentTimeOffsetInMinutes,
       }) => ({
         name: `${alternativeName} (${abbreviation})`,
+        type: "altname",
         tzName: name,
         offset: currentTimeOffsetInMinutes,
       })
@@ -40,6 +42,7 @@ const canonicalTimezones = sortedUniqBy(
     groupedTimezones.map(({ name, group, currentTimeOffsetInMinutes }) =>
       group.map((tz) => ({
         name: tz,
+        type: "timezone",
         tzName: name,
         offset: currentTimeOffsetInMinutes,
       }))
@@ -53,7 +56,4 @@ export const tzopts = []
   .concat(altNames)
   .concat(canonicalTimezones);
 
-export const tzmap = tzopts.reduce((acc, { name, tzName }) => {
-  acc[name] = tzName;
-  return acc;
-}, {});
+export const tzmap = keyBy(tzopts, ({ name }) => name);

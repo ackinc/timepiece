@@ -21,7 +21,7 @@ const AppComponent = () => {
   const now = new Date();
   const zoneData = zones.map((zone) => ({
     name: zone,
-    time: utcToZonedTime(now, tzmap[zone]),
+    time: utcToZonedTime(now, tzmap[zone].tzName),
   }));
   const sortedZoneData =
     sortBy === "name"
