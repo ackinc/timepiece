@@ -1,5 +1,4 @@
-import { ButtonGroup, Button } from "@material-ui/core";
-import { ToggleButton } from "@material-ui/lab";
+import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import { utcToZonedTime, format as dateFormat } from "date-fns-tz";
 import { Set as ImmutableSet } from "immutable";
 import { groupBy } from "lodash";
@@ -16,7 +15,18 @@ const AppComponent = () => {
 
   useEffect(() => {
     (async () => {
-      const { selectedZones = [] } = await storage.get("selectedZones");
+      const { selectedZones = [], sortBy, group } = await storage.get([
+        "selectedZones",
+        "sortBy",
+        "group",
+      ]);
+
+      console.log(selectedZones);
+      console.log(sortBy);
+      console.log(group);
+
+      if (sortBy) setSortBy(sortBy);
+      if (group) setGroup(group);
       setZones(new ImmutableSet(selectedZones));
     })();
   }, []);
@@ -32,12 +42,14 @@ const AppComponent = () => {
 
     const groupOrder = [
       { key: "city", label: "Cities" },
-      { key: "altname", label: "Timezones (Informal/Abbreviations)" },
+      { key: "altname", label: "Timezones (Informal)" },
       { key: "timezone", label: "Timezones" },
     ];
     zoneData = groupOrder.map(({ key, label }) => ({
       label: label,
-      zones: sortZoneData(zoneData[key], sortBy),
+      // default to empty arr below to avoid error if we're grouping
+      //   an empty zoneData array
+      zones: sortZoneData(zoneData[key] || [], sortBy),
     }));
   } else {
     zoneData = [
@@ -57,28 +69,26 @@ const AppComponent = () => {
       }}
     >
       <AddZoneComponent onAdd={addZone} />
-      <ButtonGroup
+      <ToggleButtonGroup
         className="sort-buttons"
+        exclusive
         color="primary"
         size="small"
-        orientation="vertical"
+        onChange={(_, value) => toggleSort(value)}
       >
-        <Button
-          variant={sortBy === "name" ? "contained" : "outlined"}
-          onClick={() => setSortBy("name")}
-        >
+        <ToggleButton value="name" selected={sortBy === "name"}>
           name
-        </Button>
-        <Button
-          variant={sortBy === "time" ? "contained" : "outlined"}
-          onClick={() => setSortBy("time")}
-        >
+        </ToggleButton>
+        <ToggleButton value="time" selected={sortBy === "time"}>
           time
-        </Button>
-      </ButtonGroup>
+        </ToggleButton>
+      </ToggleButtonGroup>
       <ToggleButton
         selected={group}
-        onChange={() => setGroup(!group)}
+        onChange={async () => {
+          await storage.set({ group: !group });
+          setGroup(!group);
+        }}
         value="group"
         size="small"
       >
@@ -117,6 +127,11 @@ const AppComponent = () => {
             dateFormat(b.time, cmpFormat)
           );
         });
+  }
+
+  async function toggleSort(mode) {
+    await storage.set({ sortBy: mode });
+    setSortBy(mode);
   }
 };
 
