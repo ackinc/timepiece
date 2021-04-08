@@ -3,13 +3,13 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { utcToZonedTime, format as dateFormat } from "date-fns-tz";
 import { Set as ImmutableSet } from "immutable";
 import React, { useEffect, useState } from "react";
-import CountrySelectionComponent from "./CountrySelection";
+import AddZoneComponent from "./AddZone";
 import storage from "../common/storage";
 import { tzmap } from "../common/tzutils";
 
 const AppComponent = () => {
   const [zones, setZones] = useState(new ImmutableSet());
-  const [sortBy, setSortBy] = useState("time");
+  const [sortBy, setSortBy] = useState("name");
 
   useEffect(() => {
     (async () => {
@@ -41,7 +41,7 @@ const AppComponent = () => {
         width: "300px",
       }}
     >
-      <CountrySelectionComponent onSelect={addZone} />
+      <AddZoneComponent onAdd={addZone} />
       <ButtonGroup color="primary" size="small" orientation="vertical">
         <Button
           variant={sortBy === "name" ? "contained" : "outlined"}

@@ -7,7 +7,7 @@ import { tzopts } from "../common/tzutils";
 const blankOption = { name: "" };
 const options = [blankOption].concat(tzopts);
 
-function CountrySelectionComponent({ onSelect }) {
+function AddZoneComponent({ onAdd }) {
   // If we don't control inputValue, the combobox will display entered text
   //   on field blur
   const [inputValue, setInputValue] = useState("");
@@ -33,14 +33,14 @@ function CountrySelectionComponent({ onSelect }) {
   }
 
   async function handleChange(_, { name }) {
-    if (name) await onSelect(name);
+    if (name) await onAdd(name);
     setInputValue("");
     setValue(blankOption);
   }
 }
 
-CountrySelectionComponent.propTypes = {
-  onSelect: PropTypes.func.isRequired,
+AddZoneComponent.propTypes = {
+  onAdd: PropTypes.func.isRequired,
 };
 
-export default CountrySelectionComponent;
+export default AddZoneComponent;
