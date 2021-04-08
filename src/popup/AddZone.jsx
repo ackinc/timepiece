@@ -2,10 +2,10 @@ import { TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
-import { tzopts } from "../common/tzutils";
+import { zonesArr } from "../common/zones";
 
 const blankOption = { name: "" };
-const options = [blankOption].concat(tzopts);
+const options = [blankOption].concat(zonesArr);
 
 function AddZoneComponent({ onAdd }) {
   // If we don't control inputValue, the combobox will display entered text

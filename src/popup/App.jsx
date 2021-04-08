@@ -5,7 +5,7 @@ import { Set as ImmutableSet } from "immutable";
 import React, { useEffect, useState } from "react";
 import AddZoneComponent from "./AddZone";
 import storage from "../common/storage";
-import { tzmap } from "../common/tzutils";
+import { zonesMap } from "../common/zones";
 
 const AppComponent = () => {
   const [zones, setZones] = useState(new ImmutableSet());
@@ -21,7 +21,7 @@ const AppComponent = () => {
   const now = new Date();
   const zoneData = zones.map((zone) => ({
     name: zone,
-    time: utcToZonedTime(now, tzmap[zone].tzName),
+    time: utcToZonedTime(now, zonesMap[zone].tzName),
   }));
   const sortedZoneData =
     sortBy === "name"

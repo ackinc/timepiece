@@ -51,9 +51,9 @@ const canonicalTimezones = sortedUniqBy(
   ({ name }) => name
 );
 
-export const tzopts = []
+export const zonesArr = []
   .concat(cities)
   .concat(altNames)
   .concat(canonicalTimezones);
 
-export const tzmap = keyBy(tzopts, ({ name }) => name);
+export const zonesMap = keyBy(zonesArr, ({ name }) => name);
