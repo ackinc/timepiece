@@ -1,9 +1,9 @@
 import { ButtonGroup, Button } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
 import { utcToZonedTime, format as dateFormat } from "date-fns-tz";
 import { Set as ImmutableSet } from "immutable";
 import React, { useEffect, useState } from "react";
 import AddZoneComponent from "./AddZone";
+import ZoneListComponent from "./ZoneList";
 import storage from "../common/storage";
 import { zonesMap } from "../common/zones";
 
@@ -56,21 +56,7 @@ const AppComponent = () => {
           time
         </Button>
       </ButtonGroup>
-      {sortedZoneData.map(({ name, time }) => (
-        <div
-          key={name}
-          className="zone-container"
-          style={{
-            padding: "10px",
-            marginBottom: "20px",
-          }}
-        >
-          {dateFormat(time, "dd MMM hh:mm aaa")} {name}
-          <button onClick={() => removeZone(name)}>
-            <DeleteIcon color="action" fontSize="small" />
-          </button>
-        </div>
-      ))}
+      <ZoneListComponent zones={sortedZoneData} onRemove={removeZone} />
     </div>
   );
 
