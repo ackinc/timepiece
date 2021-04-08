@@ -8,6 +8,7 @@ import { tzmap } from "../common/tzutils";
 
 const AppComponent = () => {
   const [zones, setZones] = useState(new ImmutableSet());
+  const [sortBy, setSortBy] = useState("name");
 
   useEffect(() => {
     (async () => {
@@ -17,6 +18,14 @@ const AppComponent = () => {
   }, []);
 
   const now = new Date();
+  const zoneData = zones.map((zone) => ({
+    name: zone,
+    time: utcToZonedTime(now, tzmap[zone]),
+  }));
+  const sortedZoneData =
+    sortBy === "name"
+      ? zoneData.sort((a, b) => a.name.localeCompare(b.name))
+      : zoneData;
 
   return (
     <div
@@ -27,17 +36,16 @@ const AppComponent = () => {
       }}
     >
       <CountrySelectionComponent onSelect={addZone} />
-      {zones.map((name) => (
+      {sortedZoneData.map(({ name, time }) => (
         <div
           key={name}
-          className="zone"
+          className="zone-container"
           style={{
             padding: "10px",
             marginBottom: "20px",
           }}
         >
-          {dateFormat(utcToZonedTime(now, tzmap[name]), "dd MMM hh:mm aaa")}{" "}
-          {name}
+          {dateFormat(time, "dd MMM hh:mm aaa")} {name}
           <button onClick={() => removeZone(name)}>
             <DeleteIcon color="action" fontSize="small" />
           </button>
