@@ -20,6 +20,7 @@ function CountrySelectionComponent({ onSelect }) {
       renderInput={(params) => (
         <TextField {...params} label="Add Timezone" variant="outlined" />
       )}
+      closeIcon={null}
       inputValue={inputValue}
       value={value}
       onInputChange={handleInputChange}
