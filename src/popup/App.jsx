@@ -1,3 +1,4 @@
+import { ButtonGroup, Button } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { utcToZonedTime, format as dateFormat } from "date-fns-tz";
 import { Set as ImmutableSet } from "immutable";
@@ -8,7 +9,7 @@ import { tzmap } from "../common/tzutils";
 
 const AppComponent = () => {
   const [zones, setZones] = useState(new ImmutableSet());
-  const [sortBy, setSortBy] = useState("name");
+  const [sortBy, setSortBy] = useState("time");
 
   useEffect(() => {
     (async () => {
@@ -25,7 +26,12 @@ const AppComponent = () => {
   const sortedZoneData =
     sortBy === "name"
       ? zoneData.sort((a, b) => a.name.localeCompare(b.name))
-      : zoneData;
+      : zoneData.sort((a, b) => {
+          const cmpFormat = "yyyy-MM-dd HH:mm:ss";
+          return dateFormat(a.time, cmpFormat).localeCompare(
+            dateFormat(b.time, cmpFormat)
+          );
+        });
 
   return (
     <div
@@ -36,6 +42,20 @@ const AppComponent = () => {
       }}
     >
       <CountrySelectionComponent onSelect={addZone} />
+      <ButtonGroup color="primary" size="small" orientation="vertical">
+        <Button
+          variant={sortBy === "name" ? "contained" : "outlined"}
+          onClick={() => setSortBy("name")}
+        >
+          name
+        </Button>
+        <Button
+          variant={sortBy === "time" ? "contained" : "outlined"}
+          onClick={() => setSortBy("time")}
+        >
+          time
+        </Button>
+      </ButtonGroup>
       {sortedZoneData.map(({ name, time }) => (
         <div
           key={name}
