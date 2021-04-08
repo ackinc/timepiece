@@ -19,13 +19,22 @@ const AppComponent = () => {
   const now = new Date();
 
   return (
-    <div className="container">
+    <div
+      className="container"
+      style={{
+        minHeight: "400px",
+        width: "300px",
+      }}
+    >
       <CountrySelectionComponent onSelect={addZone} />
       {zones.map((name) => (
         <div
           key={name}
           className="zone"
-          style={{ padding: "10px", marginBottom: "20px", width: "300px" }}
+          style={{
+            padding: "10px",
+            marginBottom: "20px",
+          }}
         >
           {dateFormat(utcToZonedTime(now, tzmap[name]), "dd MMM hh:mm aaa")}{" "}
           {name}
