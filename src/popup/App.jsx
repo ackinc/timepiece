@@ -21,12 +21,8 @@ const AppComponent = () => {
         "group",
       ]);
 
-      console.log(selectedZones);
-      console.log(sortBy);
-      console.log(group);
-
       if (sortBy) setSortBy(sortBy);
-      if (group) setGroup(group);
+      if (group !== undefined) setGroup(group);
       setZones(new ImmutableSet(selectedZones));
     })();
   }, []);
