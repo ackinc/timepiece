@@ -90,14 +90,16 @@ const AppComponent = () => {
       >
         Group?
       </ToggleButton>
-      {zoneData.map(({ label, zones }) => (
-        <ZoneListComponent
-          key={label || "all"} // small hack to prevent React's "missing key"
-          headerLabel={label}
-          zones={zones}
-          onRemove={removeZone}
-        />
-      ))}
+      {zoneData
+        .filter(({ zones }) => zones.length > 0)
+        .map(({ label, zones }) => (
+          <ZoneListComponent
+            key={label || "all"} // small hack to prevent React's "missing key"
+            headerLabel={label}
+            zones={zones}
+            onRemove={removeZone}
+          />
+        ))}
     </div>
   );
 
