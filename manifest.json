@@ -1,6 +1,6 @@
 {
   "name": "Timepiece",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "View times in cities/zones around the world",
   "manifest_version": 2,
   "browser_action": {
