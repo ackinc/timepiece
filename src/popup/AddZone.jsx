@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { zonesArr } from "../common/zones";
 
-function AddZoneComponent({ onAdd }) {
+function AddZoneComponent({ onAdd, ...restProps }) {
   // If we don't control inputValue, the combobox will display entered text
   //   on field blur
   const [inputValue, setInputValue] = useState("");
@@ -20,8 +20,10 @@ function AddZoneComponent({ onAdd }) {
       closeIcon={null}
       inputValue={inputValue}
       value={value}
+      size="small"
       onInputChange={handleInputChange}
       onChange={handleChange}
+      {...restProps}
     />
   );
 

@@ -1,3 +1,7 @@
+import { Tooltip } from "@material-ui/core";
+import AccessTimeOutlinedIcon from "@material-ui/icons/AccessTimeOutlined";
+import AccountTreeOutlinedIcon from "@material-ui/icons/AccountTreeOutlined";
+import SortOutlinedIcon from "@material-ui/icons/SortOutlined";
 import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import { utcToZonedTime, format as dateFormat } from "date-fns-tz";
 import { Set as ImmutableSet } from "immutable";
@@ -21,12 +25,8 @@ const AppComponent = () => {
         "group",
       ]);
 
-      console.log(selectedZones);
-      console.log(sortBy);
-      console.log(group);
-
       if (sortBy) setSortBy(sortBy);
-      if (group) setGroup(group);
+      if (group !== undefined) setGroup(group);
       setZones(new ImmutableSet(selectedZones));
     })();
   }, []);
@@ -65,43 +65,78 @@ const AppComponent = () => {
       className="container"
       style={{
         minHeight: "400px",
-        width: "300px",
+        width: "350px",
       }}
     >
-      <AddZoneComponent onAdd={addZone} />
-      <ToggleButtonGroup
-        className="sort-buttons"
-        exclusive
-        color="primary"
-        size="small"
-        onChange={(_, value) => toggleSort(value)}
+      <div
+        style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}
       >
-        <ToggleButton value="name" selected={sortBy === "name"}>
-          name
-        </ToggleButton>
-        <ToggleButton value="time" selected={sortBy === "time"}>
-          time
-        </ToggleButton>
-      </ToggleButtonGroup>
-      <ToggleButton
-        selected={group}
-        onChange={async () => {
-          await storage.set({ group: !group });
-          setGroup(!group);
-        }}
-        value="group"
-        size="small"
-      >
-        Group?
-      </ToggleButton>
-      {zoneData.map(({ label, zones }) => (
-        <ZoneListComponent
-          key={label || "all"} // small hack to prevent React's "missing key"
-          headerLabel={label}
-          zones={zones}
-          onRemove={removeZone}
+        <AddZoneComponent
+          onAdd={addZone}
+          style={{ flexGrow: 1, marginRight: "20px" }}
         />
-      ))}
+
+        <ToggleButtonGroup
+          className="sort-buttons"
+          exclusive
+          color="primary"
+          size="small"
+          onChange={(_, value) => toggleSort(value)}
+          style={{ marginRight: "10px" }}
+          value={sortBy}
+        >
+          <Tooltip title="Sort alphabetically">
+            <ToggleButton
+              value="name"
+              selected={sortBy === "name"}
+              style={{ border: "0px" }}
+              disableRipple={true}
+            >
+              <SortOutlinedIcon fontSize="small" />
+              AZ
+            </ToggleButton>
+          </Tooltip>
+
+          <Tooltip title="Sort by time">
+            <ToggleButton
+              value="time"
+              selected={sortBy === "time"}
+              style={{ border: "0px" }}
+              disableRipple={true}
+            >
+              <SortOutlinedIcon fontSize="small" />
+              <AccessTimeOutlinedIcon fontSize="small" />
+            </ToggleButton>
+          </Tooltip>
+        </ToggleButtonGroup>
+
+        <Tooltip title="Group">
+          <ToggleButton
+            selected={group}
+            onChange={async () => {
+              await storage.set({ group: !group });
+              setGroup(!group);
+            }}
+            value="group"
+            size="small"
+            disableRipple={true}
+            style={{ border: "0px" }}
+          >
+            <AccountTreeOutlinedIcon fontSize="small" />
+          </ToggleButton>
+        </Tooltip>
+      </div>
+
+      {zoneData
+        .filter(({ zones }) => zones.length > 0)
+        .map(({ label, zones }) => (
+          <ZoneListComponent
+            key={label || "all"} // small hack to prevent React's "missing key"
+            headerLabel={label}
+            zones={zones}
+            onRemove={removeZone}
+          />
+        ))}
     </div>
   );
 
