@@ -4,7 +4,7 @@
   "author": "Anirudh Nimmagadda <anirudh.nimmagadda@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "prebuild": "yarn clean",
+    "prebuild": "pnpm run clean",
     "build": "webpack",
     "build:watch": "webpack --watch",
     "dist": "find build -type f | grep -v .keep | xargs zip dist/dist.zip",
